@@ -11,6 +11,9 @@ services:
       FEISHU_APP_ID: ${FEISHU_APP_ID:-}
       FEISHU_APP_SECRET: ${FEISHU_APP_SECRET:-}
       MINIMAX_API_KEY: ${MINIMAX_API_KEY:-}
+      MATON_API_KEY: ${MATON_API_KEY:-}
+      WHISPER_API_KEY: ${WHISPER_API_KEY:-}
+      WHISPER_BASE_URL: ${WHISPER_BASE_URL:-}
     volumes:
       - openclaw_config:/home/node/.openclaw
       - openclaw_workspace:/home/node/.openclaw/workspace
@@ -40,6 +43,9 @@ services:
       FEISHU_APP_ID: ${FEISHU_APP_ID:-}
       FEISHU_APP_SECRET: ${FEISHU_APP_SECRET:-}
       MINIMAX_API_KEY: ${MINIMAX_API_KEY:-}
+      MATON_API_KEY: ${MATON_API_KEY:-}
+      WHISPER_API_KEY: ${WHISPER_API_KEY:-}
+      WHISPER_BASE_URL: ${WHISPER_BASE_URL:-}
     volumes:
       - openclaw_config:/home/node/.openclaw
       - openclaw_workspace:/home/node/.openclaw/workspace

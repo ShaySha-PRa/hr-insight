@@ -27,30 +27,27 @@ Offline-only. No network access.
 
 ## Input Convention
 
-- Resume PDF directory: `<RESUME_PDF_DIR>`
-- Markdown output directory: `<RESUME_MD_DIR>`
+Store each resume under the workspace candidate folder (see `HIRING.md`):
 
-Example:
-
-- Input filename: `john_doe_resume.pdf`
-- Resolved input path: `<RESUME_PDF_DIR>/john_doe_resume.pdf`
-- Output file: `<RESUME_MD_DIR>/john_doe_resume.md`
+- Input: `candidates/{slug}/resume.pdf`
+- Output: `candidates/{slug}/resume.md`
 
 ## Convert Resume (Single PDF)
 
-- Convert by filename:
-
-  ```bash
-  python pdf_to_md.py --input <RESUME_PDF_DIR>/john_doe_resume.pdf --output <RESUME_MD_DIR>/john_doe_resume.md
-  ```
+```bash
+python3 skills/pdf_resume_to_md/pdf_to_md.py \
+  --input candidates/{slug}/resume.pdf \
+  --output candidates/{slug}/resume.md
+```
 
 ## Batch Conversion (Optional)
 
-- Convert all PDFs in a directory:
-
-  ```bash
-  python pdf_to_md.py --input <RESUME_PDF_DIR> --output <RESUME_MD_DIR> --recursive
-  ```
+```bash
+python3 skills/pdf_resume_to_md/pdf_to_md.py \
+  --input candidates \
+  --output candidates \
+  --recursive
+```
 
 ## Output Format
 

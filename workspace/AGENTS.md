@@ -12,8 +12,9 @@ Before doing anything else:
 
 1. Read `SOUL.md` — this is who you are
 2. Read `USER.md` — this is who you're helping
-3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
-4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
+3. Read `HIRING.md` — candidate file layout and field conventions
+4. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
+5. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
 
 Don't ask permission. Just do it.
 
@@ -43,9 +44,37 @@ You are responsible for maintaining consistency across:
 
 If information conflicts across sources, surface the inconsistency instead of guessing.
 
+Keep every candidate artifact **inside this workspace**. Never write to a host Desktop, home folder, or any path outside the workspace volume.
+
+Canonical layout (see `HIRING.md`):
+
+```
+candidates/{slug}/
+  resume.pdf
+  resume.md
+  profile.md
+  interviews/{round}.{m4a,mp3,wav}
+  interviews/{round}.transcript.md
+hiring/pipeline.md
+comparisons/{role}-{date}.md
+```
+
+`{slug}` is lowercase ASCII with hyphens (name or pinyin). Reuse an existing slug when the same person arrives again.
+
+When a resume PDF arrives (Feishu file or Gmail attachment):
+
+1. Save it as `candidates/{slug}/resume.pdf`
+2. Run `pdf_resume_to_md` → `candidates/{slug}/resume.md`
+3. Write or update `candidates/{slug}/profile.md`
+4. Add or refresh the row in `hiring/pipeline.md`
+5. Reply in chat with a structured summary
+
+When a second (or later) candidate exists, or the user asks to compare, follow `skills/candidate_compare/SKILL.md`. Write the report to `comparisons/` and reply with the table. Do not put the recommendation in `MEMORY.md`.
+
 ### Interview Data Handling
 
 - Interview recordings and notes are *inputs*, not final judgments.
+- When audio arrives (Feishu upload or email attachment), save it under `candidates/{slug}/interviews/` and run `interview_transcribe` (Feishu ASR by default).
 - Summaries must separate:
   - factual observations
   - interviewer statements
@@ -75,8 +104,9 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 - Do NOT write candidate evaluations or interview judgments directly into MEMORY.md.
 - Candidate-specific conclusions belong in:
-  - resume Markdown files
-  - hiring tables
+  - `candidates/{slug}/` records
+  - `hiring/pipeline.md`
+  - `comparisons/` reports
   - interview summaries
 - MEMORY.md may only store:
   - hiring process improvements
@@ -95,8 +125,10 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 ## What May Be Written Where (HR Context)
 
 - Raw events → `memory/YYYY-MM-DD.md`
-- Candidate facts → resume Markdown
-- Interview summaries → candidate records / tables
+- Candidate facts → `candidates/{slug}/resume.md` and `profile.md`
+- Interview transcripts → `candidates/{slug}/interviews/`
+- Interview summaries → candidate records / `hiring/pipeline.md`
+- Side-by-side judgments → `comparisons/{role}-{date}.md`
 - Evaluative frameworks → MEMORY.md
 - Mistakes in hiring logic → AGENTS.md
 
@@ -220,7 +252,7 @@ You are free to edit `HEARTBEAT.md` with a short checklist or reminders. Keep it
 
 **Things to check (rotate through these, 2-4 times per day):**
 
-- **Emails** - Any urgent unread messages?
+- **Emails** - Unread inbox items with resume attachments (use `gmail_resume_ingest` when Gmail is configured)
 - **Calendar** - Upcoming events in next 24-48h?
 - **Mentions** - Twitter/social notifications?
 - **Weather** - Relevant if your human might go out?

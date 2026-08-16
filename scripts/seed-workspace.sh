@@ -10,17 +10,33 @@ if [[ -z "$CID" ]]; then
   exit 1
 fi
 
-docker cp "$ROOT/workspace/AGENTS.md" "$CID:/home/node/.openclaw/workspace/AGENTS.md"
-docker cp "$ROOT/workspace/IDENTITY.md" "$CID:/home/node/.openclaw/workspace/IDENTITY.md"
-docker cp "$ROOT/workspace/SOUL.md" "$CID:/home/node/.openclaw/workspace/SOUL.md"
-docker cp "$ROOT/workspace/USER.md" "$CID:/home/node/.openclaw/workspace/USER.md"
-docker exec "$CID" mkdir -p /home/node/.openclaw/workspace/skills
-docker cp "$ROOT/workspace/skills/pdf_resume_to_md" "$CID:/home/node/.openclaw/workspace/skills/pdf_resume_to_md"
+WS=/home/node/.openclaw/workspace
+
+docker exec "$CID" mkdir -p "$WS/skills" "$WS/hiring" "$WS/candidates" "$WS/comparisons"
+
+for f in AGENTS.md IDENTITY.md SOUL.md USER.md HIRING.md HEARTBEAT.md; do
+  docker cp "$ROOT/workspace/$f" "$CID:$WS/$f"
+done
+
+if ! docker exec "$CID" test -s "$WS/hiring/pipeline.md"; then
+  docker cp "$ROOT/workspace/hiring/pipeline.md" "$CID:$WS/hiring/pipeline.md"
+fi
+
+for skill in pdf_resume_to_md candidate_compare gmail_resume_ingest interview_transcribe; do
+  docker exec "$CID" rm -rf "$WS/skills/$skill"
+  docker cp "$ROOT/workspace/skills/$skill" "$CID:$WS/skills/$skill"
+done
+
 docker exec "$CID" chown -R node:node \
-  /home/node/.openclaw/workspace/AGENTS.md \
-  /home/node/.openclaw/workspace/IDENTITY.md \
-  /home/node/.openclaw/workspace/SOUL.md \
-  /home/node/.openclaw/workspace/USER.md \
-  /home/node/.openclaw/workspace/skills
+  "$WS/AGENTS.md" \
+  "$WS/IDENTITY.md" \
+  "$WS/SOUL.md" \
+  "$WS/USER.md" \
+  "$WS/HIRING.md" \
+  "$WS/HEARTBEAT.md" \
+  "$WS/hiring" \
+  "$WS/candidates" \
+  "$WS/comparisons" \
+  "$WS/skills"
 
 echo "Workspace files copied into the running gateway volume."
